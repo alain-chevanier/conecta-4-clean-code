@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Test;
 class Connect4Test {
 
   @Test
-  void testExample() {
-    // preparación
-    assertThat(1, is(1));
+  void testPrintEmptyBoard() {
+    Connect4 connect4 = new Connect4(3, 4, 2);
+    String actualOutput = connect4.toString();
+
+    String expectedOutput = "- - - -\n" + "- - - -\n" + "- - - -";
+
+    assertThat(actualOutput, is(expectedOutput));
   }
 }
