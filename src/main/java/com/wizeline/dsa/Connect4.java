@@ -24,6 +24,14 @@ public class Connect4 {
     System.out.print(this);
   }
 
+  public int makePlay(int player, int column) {
+    return 0;
+  }
+
+  public boolean playerWon(int row, int column) {
+    return false;
+  }
+
   @Override
   public String toString() {
     StringBuilder partialGameBoard = new StringBuilder();
