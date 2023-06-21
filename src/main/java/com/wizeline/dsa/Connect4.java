@@ -1,5 +1,7 @@
 package com.wizeline.dsa;
 
+import java.util.Objects;
+
 public class Connect4 {
   /* Player
    * 0 - 'a'
@@ -8,9 +10,7 @@ public class Connect4 {
    * */
   private final Integer[][] gameBoard;
   private final Integer players;
-
   private final Integer rows;
-
   private final Integer columns;
 
   public Connect4(int rows, int columns, int players) {
@@ -20,16 +20,62 @@ public class Connect4 {
     this.gameBoard = new Integer[rows][columns];
   }
 
+  public int makePlay(int player, int column) {
+    // 0. 0 <= player < this.players y 0 <= column < columns
+    // si alguna de las dos no se cumple lanzar una excepción "IllegalArgumentException"
+    if (player < 0 || player >= this.players) {
+      throw new IllegalArgumentException(); //
+    }
+    if (column < 0 || column >= this.columns) {
+      throw new IllegalArgumentException(); //
+    }
+    // 1. buscar si en esta column hay un espacio libre (renglón)
+    // si lo tengo pasar 2.
+    // si no lo tengo lanzo una excepción de "FullColumnException"
+    int availableRow = -1;
+    for (int row = this.rows - 1; row >= 0; row--) {
+      if (Objects.isNull(gameBoard[row][column])) {
+        availableRow = row;
+        break;
+      }
+    }
+    if (availableRow < 0) {
+      throw new FullColumnException();
+    }
+    // 2. marcar la casilla como ocupada con el playerId dado.
+    gameBoard[availableRow][column] = player;
+
+    // 3. regresar el renglón donde cayó la pelotita
+    return availableRow;
+  }
+
+  public boolean anyoneWon(int row, int column) {
+    // si gana verticalmente :checked:
+    // si gana horizontalmente :checked:
+    // si gana diagonal ascendente :checked:
+    // si gana diagonal descendente :checked:
+    // si no gama em ninguna de las anteriores regresa false
+    return anyoneWonVertically(row, column); // || ... || ... || ...;
+  }
+
+  private boolean anyoneWonVertically(int row, int column) {
+    int consecutiveTokens = 0;
+    for (int currentRow = row; currentRow < this.rows; currentRow++) {
+      int currentPlayer = gameBoard[currentRow][column];
+      if (currentPlayer == gameBoard[currentRow + 1][column]) {
+        consecutiveTokens++;
+        if (consecutiveTokens == 3) {
+          return true;
+        }
+      } else {
+        break;
+      }
+    }
+    return false;
+  }
+
   public void printBoard() {
     System.out.print(this);
-  }
-
-  public int makePlay(int player, int column) {
-    return 0;
-  }
-
-  public boolean playerWon(int row, int column) {
-    return false;
   }
 
   @Override
